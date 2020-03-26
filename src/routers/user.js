@@ -25,12 +25,12 @@ router.post('/users/login', async(req, res) => {
         const { email, password } = req.body
         const user = await User.findByCredentials(email, password)
         if (!user) {
-            return res.send({"falg":"0",error: 'Login failed! Check authentication credentials'})
+            return res.send({"falg":false,error: 'Login failed! Check authentication credentials'})
         }
         const token = await user.generateAuthToken()
-        res.send({"flag":"1", user, token })
+        res.send({"flag":true, user, token })
     } catch (error) {
-        res.send({"flag":"0",error:'login failed!!'})
+        res.send({"flag":false,error:'login failed!!'})
     }
 
 })
@@ -42,9 +42,9 @@ router.post('/users/update', async(req, res) => {
     new: true
   })
   if(!doc){
-    res.send({"flag":"0",error:'update failed!!'})
+    res.send({"flag":false,error:'update failed!!'})
   }
-  res.send(doc)
+  res.send({"flag":true,doc})
 
 })
 
@@ -126,7 +126,7 @@ router.post('/users/forgotpassword',  function(req, res) {
     };
     transport.sendMail(message, function(err, info) {
         if (err) {
-          res.send({"flag":"0",err})
+          res.send({"flag":false,err})
         } else {
         res.send({'otp':rand})
         }
@@ -143,9 +143,9 @@ router.post('/admin/login', async(req, res) => {
             return res.send({"flag":"0",error: 'Login failed! Check authentication credentials'})
         }
         const token = await admin.generateAuthToken()
-        res.send({"flag":"1",admin, token })
+        res.send({"flag":true,admin, token })
     } catch (error) {
-        res.send({"flag":"0",error:'login failed!!'})
+        res.send({"flag":false,error:'login failed!!'})
     }
 })
 
@@ -189,19 +189,19 @@ router.post('/routes', async (req, res) => {
         //res.send({"re":route})
          await route.save()
         //const token = await route.generateAuthToken()
-        res.send({"flag":"1",success:'Data entered'})
+        res.send({"flag":true,success:'Data entered'})
         //res.status(201).send({ route, token })
     } catch (error) {
-        res.status(400).send({"flag":"0",error:'data not entered'})
+        res.status(400).send({"flag":true,error:'data not entered'})
     }
 })
 router.get('/routes/fetch', function (req, res) {
     const bus = Route.find({}, function(err, bus){
         if(err){
-            res.send({"flag":"0",err})
+            res.send({"flag":false,err})
         }
         else {
-            res.send({"flag":"1",bus});
+            res.send({"flag":true,bus});
         }
     }).sort({'time':-1}).limit(2)
 })
@@ -212,10 +212,10 @@ router.post('/bus/enter', async (req, res) => {
         const route = new Bus(req.body)
         await route.save()
         //const token = await route.generateAuthToken()
-        res.send({"flag":"1",success:'Data entered'})
+        res.send({"flag":true,success:'Data entered'})
         //res.status(201).send({ route, token })
     } catch (error) {
-        res.send({"flag":"0",error:'data not entered'})
+        res.send({"flag":false,error:'data not entered'})
     }
 })
 router.post('/bus/fetch', function (req, res) {
@@ -224,10 +224,10 @@ router.post('/bus/fetch', function (req, res) {
     const bus = Bus.find({route:route}, function(err, bus){
         
         if(err){
-            res.send({"flag":"0",err:'failure!!!'})
+            res.send({"flag":false,err:'failure!!!'})
         }
         else {
-            res.send({"flag":"1",bus});
+            res.send({"flag":true,bus});
         }
     })
 })
@@ -252,9 +252,9 @@ router.post('/drivers', async (req, res) => {
         const driver = new Driver(req.body)
         await driver.save()
         const token = await driver.generateAuthToken()
-        res.send({"flag":"1", driver, token })
+        res.send({"flag":true, driver, token })
     } catch (error) {
-        res.send({"flag":"0",error})
+        res.send({"flag":false,error})
     }
 })
 
@@ -264,12 +264,12 @@ router.post('/drivers/login', async(req, res) => {
         const { phoneno, pin} = req.body
         const driver = await Driver.findByCredentials(phoneno, pin)
         if (!driver) {
-            return res.status(401).send({"flag":"1",error: 'Login failed! Check authentication credentials'})
+            return res.status(401).send({"flag":false,error: 'Login failed! Check authentication credentials'})
         }
         const token = await driver.generateAuthToken()
-        res.send({"flag":"1",driver, token })
+        res.send({"flag":true,driver, token })
     } catch (error) {
-        res.send({"flag":"1",error:'login failed!!'})
+        res.send({"flag":false,error:'login failed!!'})
     }
 })
 router.post('/drivers/update', async(req, res) => {
@@ -280,7 +280,7 @@ router.post('/drivers/update', async(req, res) => {
     new: true
   })
   if(!doc){
-    res.send({"flag":"0",error:"not updated"})
+    res.send({"flag":false,error:"not updated"})
   }
   res.send(doc)
 })
@@ -293,7 +293,7 @@ router.get('/admin/alldrivers', function(req, res) {
         i=i+1;
       } );
   
-      res.send({"flag":"1",driverMap});  
+      res.send({"flag":true,driverMap});  
     });
   });
 module.exports = router
