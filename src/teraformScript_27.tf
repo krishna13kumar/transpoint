@@ -1,0 +1,1 @@
+The sum of two numbers is calculated by adding the two numbers together. For example, if the two numbers are 3 and 5, the sum would be 8.
