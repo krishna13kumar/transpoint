@@ -1,0 +1,1 @@
+The sum of two numbers is the result of adding them together. For example, if we add 2 and 3, the sum is 5.
